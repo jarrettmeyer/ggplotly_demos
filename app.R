@@ -1,4 +1,5 @@
 suppressPackageStartupMessages({
+    library(ggthemes)
     library(plotly)
     library(RColorBrewer)
     library(scales)
@@ -22,6 +23,24 @@ ui <- fluidPage(
                                         "Histogram",
                                         "Scatterplot"),
                             selected = "Scatterplot"),
+                selectInput("theme",
+                            label = "Theme",
+                            choices = c("theme_bw",
+                                        "theme_calc",
+                                        "theme_classic",
+                                        "theme_economist",
+                                        "theme_few",
+                                        "theme_fivethirtyeight",
+                                        "theme_gdocs",
+                                        "theme_gray",
+                                        "theme_dark",
+                                        "theme_light",
+                                        "theme_linedraw",
+                                        "theme_minimal",
+                                        "theme_tufte",
+                                        "theme_void",
+                                        "theme_wsj"),
+                            selected = "theme_gray"),
                 selectInput("colorscheme",
                             label = "Color Scheme",
                             choices = sort(rownames(brewer.pal.info)),
@@ -60,7 +79,7 @@ server <- function(input, output) {
                        scale_fill_distiller(name = "Value",
                                             palette = input$colorscheme) +
                        coord_quickmap() +
-                       theme_minimal() +
+                       get(input$theme)() +
                        ggtitle("US with Random Values") +
                        xlab("Longitude") +
                        ylab("Latitude") +
@@ -81,7 +100,8 @@ server <- function(input, output) {
                        scale_fill_distiller(name = "Count", palette = input$colorscheme) +
                        scale_y_continuous(labels = comma) +
                        xlab("Value") +
-                       ggtitle("Histogram of Random Normal Data (m = 0, sd = 1)")
+                       ggtitle("Histogram of Random Normal Data (m = 0, sd = 1)") +
+                       get(input$theme)()
 
                    # Create a plotly object.
                    my_plotly <- ggplotly(p) %>%
@@ -99,7 +119,8 @@ server <- function(input, output) {
                        scale_color_brewer(palette = input$colorscheme) +
                        ggtitle("Petal Length vs. Petal Width") +
                        xlab("Petal Width") +
-                       ylab("Petal Length")
+                       ylab("Petal Length") +
+                       get(input$theme)()
 
                    # Create a plotly object.
                    my_plotly <- ggplotly(p) %>%
