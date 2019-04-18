@@ -1,0 +1,12 @@
+name: plot_demos
+title: plot_demos
+username:
+account: jarrettmeyer
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 876450
+bundleId: 2022437
+url: https://jarrettmeyer.shinyapps.io/plot_demos/
+when: 1555631176.84954
+asMultiple: FALSE
+asStatic: FALSE
