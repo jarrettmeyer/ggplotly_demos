@@ -1,11 +1,20 @@
 suppressPackageStartupMessages({
     library(ggthemes)
+    library(maps)
     library(plotly)
     library(RColorBrewer)
     library(scales)
     library(shiny)
     library(tidyverse)
 })
+
+
+plotWidth <- "100%"
+plotHeight <- "800px"
+themes <- c("theme_bw", "theme_calc", "theme_classic", "theme_dark", "theme_economist",
+            "theme_few", "theme_fivethirtyeight", "theme_gdocs", "theme_gray",
+            "theme_light", "theme_linedraw", "theme_minimal", "theme_tufte",
+            "theme_void", "theme_wsj")
 
 
 # Define the UI.
@@ -19,27 +28,14 @@ ui <- fluidPage(
             wellPanel(
                 selectInput("plotname",
                             label = "Plot Name",
-                            choices = c("Choropleth",
+                            choices = c("Bar Chart",
+                                        "Choropleth",
                                         "Histogram",
                                         "Scatterplot"),
-                            selected = "Scatterplot"),
+                            selected = "Bar Chart"),
                 selectInput("theme",
                             label = "Theme",
-                            choices = c("theme_bw",
-                                        "theme_calc",
-                                        "theme_classic",
-                                        "theme_economist",
-                                        "theme_few",
-                                        "theme_fivethirtyeight",
-                                        "theme_gdocs",
-                                        "theme_gray",
-                                        "theme_dark",
-                                        "theme_light",
-                                        "theme_linedraw",
-                                        "theme_minimal",
-                                        "theme_tufte",
-                                        "theme_void",
-                                        "theme_wsj"),
+                            choices = themes,
                             selected = "theme_gray"),
                 selectInput("colorscheme",
                             label = "Color Scheme",
@@ -47,8 +43,12 @@ ui <- fluidPage(
                             selected = "Set1")
             )
         ),
-        column(9,
-            plotlyOutput("plot", height = "800px")
+        column(
+            9,
+            tabsetPanel(
+                tabPanel("GGPlot", plotOutput("ggplot", width = plotWidth, height = plotHeight)),
+                tabPanel("Plotly", plotlyOutput("plotly", width = plotWidth, height = plotHeight))
+            )
         )
     )
 )
@@ -56,79 +56,96 @@ ui <- fluidPage(
 # Define the server.
 server <- function(input, output) {
 
-    # Draw the selected plot.
-    output$plot <- renderPlotly({
-        # Initialize the my_plotly object to NULL.
-        my_plotly <- NULL
-        switch(input$plotname,
-               "Choropleth" = {
+    output$ggplot <- renderPlot(
+        switch(
+            input$plotname,
+            "Bar Chart" = {
+                group <- rep(c("A", "B", "C", "D"), each = 4)
+                time <- rep(c(1, 2, 3, 4), times = 4)
+                value <- rnorm(16, mean = 20, sd = 2)
 
-                   # Create a fake data set.
-                   data <- map_data("state") %>%
-                       select(region) %>%
-                       distinct() %>%
-                       mutate(value = sample(100, size = n(), replace = TRUE))
+                df <- data.frame(group, time, value)
 
-                   choropleth <- map_data("state") %>%
-                       inner_join(data, by = "region") %>%
-                       arrange(group, order)
+                ggplot(df, aes(x = time, y = value, fill = group)) +
+                    geom_bar(stat = "identity") +
+                    scale_fill_brewer(name = "Group", palette = input$colorscheme) +
+                    ggtitle("Bar Chart") +
+                    xlab("Time") +
+                    ylab("Value") +
+                    get(input$theme)()
+            },
+            "Choropleth" = {
+                state_map <- map_data("state")
 
-                   p <- ggplot(choropleth) +
-                       geom_polygon(aes(x = long, y = lat, group = group, fill = value),
-                                color = "white") +
-                       scale_fill_distiller(name = "Value",
-                                            palette = input$colorscheme) +
-                       coord_quickmap() +
-                       get(input$theme)() +
-                       ggtitle("US with Random Values") +
-                       xlab("Longitude") +
-                       ylab("Latitude") +
-                       theme(legend.position = "bottom",
-                             legend.direction = "horizontal")
+                # Create a fake data set.
+                data <- state_map %>%
+                    select(region) %>%
+                    distinct() %>%
+                    mutate(value = sample(100, size = n(), replace = TRUE))
 
-                   my_plotly <- ggplotly(p)
-               },
-               "Histogram" = {
-                   count <- 10000
+                choropleth <- state_map %>%
+                    inner_join(data, by = "region") %>%
+                    arrange(group, order)
 
-                   # Create a random data frame.
-                   df <- data.frame(x = rnorm(count))
+                ggplot(choropleth) +
+                    geom_polygon(aes(x = long, y = lat, group = group, fill = value),
+                                 color = "white") +
+                    scale_fill_distiller(name = "Value",
+                                         palette = input$colorscheme) +
+                    coord_quickmap() +
+                    ggtitle("US Map") +
+                    xlab("Longitude") +
+                    ylab("Latitude") +
+                    get(input$theme)() +
+                    theme(legend.position = "bottom",
+                          legend.direction = "horizontal")
+            },
+            "Histogram" = {
+                count <- 10000
 
-                   # Create a ggplot object.
-                   p <- ggplot(df, aes(x = x)) +
-                       geom_histogram(stat = "bin", binwidth = 0.25, aes(fill = ..count..)) +
-                       scale_fill_distiller(name = "Count", palette = input$colorscheme) +
-                       scale_y_continuous(labels = comma) +
-                       xlab("Value") +
-                       ggtitle("Histogram of Random Normal Data (m = 0, sd = 1)") +
-                       get(input$theme)()
+                # Create a random data frame.
+                df <- data.frame(x = rnorm(count))
 
-                   # Create a plotly object.
-                   my_plotly <- ggplotly(p) %>%
-                       style(hoverinfo = "text",
-                             text = "count")
-               },
-               "Scatterplot" = {
-                   # Add text to the iris data frame.
-                   iris <- iris %>%
-                       mutate(Text = paste0("Width: ", Petal.Width, "<br>Length: ", Petal.Length, "<br>Species: ", Species))
+                # Create a ggplot object.
+                ggplot(df, aes(x = x)) +
+                    geom_histogram(stat = "bin", binwidth = 0.25, aes(fill = ..count..)) +
+                    scale_fill_distiller(name = "Count", palette = input$colorscheme) +
+                    scale_y_continuous(labels = comma) +
+                    ggtitle("Histogram") +
+                    xlab("Value") +
+                    get(input$theme)() +
+                    theme(axis.title.y = element_blank())
+            },
+            "Scatterplot" = {
+                count <- 500
 
-                   # Create a ggplot object.
-                   p <- ggplot(iris, aes(x = Petal.Width, y = Petal.Length, color = Species)) +
-                       geom_point() +
-                       scale_color_brewer(palette = input$colorscheme) +
-                       ggtitle("Petal Length vs. Petal Width") +
-                       xlab("Petal Width") +
-                       ylab("Petal Length") +
-                       get(input$theme)()
+                df <- data.frame(
+                    x = rexp(count, rate = 20),
+                    y = rexp(count, rate = 10),
+                    cat = sample(c("A", "B", "C", "D", "E"), size = count, replace = TRUE)
+                )
 
-                   # Create a plotly object.
-                   my_plotly <- ggplotly(p) %>%
-                       style(hoverinfo = "text",
-                             text = iris$Text)
-               }
+                # Create a ggplot object.
+                ggplot(df, aes(x = x, y = y, color = cat)) +
+                    geom_point() +
+                    scale_color_brewer(name = "Category",
+                                       palette = input$colorscheme) +
+                    ggtitle("Scatterplot") +
+                    xlab("X") +
+                    ylab("Y") +
+                    get(input$theme)()
+            }
         )
-        return(my_plotly)
+    )
+
+    # Draw the selected plot.
+    output$plotly <- renderPlotly({
+        switch(
+            input$plotname,
+            {
+                plot_ly(data = iris, x = ~Sepal.Length, y = ~Sepal.Width)
+            }
+        )
     })
 }
 
