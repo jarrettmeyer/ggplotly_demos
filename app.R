@@ -21,7 +21,7 @@ ui <- fluidPage(
                             choices = c("Choropleth",
                                         "Histogram",
                                         "Scatterplot"),
-                            selected = "Choropleth"),
+                            selected = "Scatterplot"),
                 selectInput("colorscheme",
                             label = "Color Scheme",
                             choices = sort(rownames(brewer.pal.info)),
