@@ -15,7 +15,7 @@ suppressPackageStartupMessages({
 plot_width <- "100%"
 plot_height <- "800px"
 plots <- c("Bar Chart", "Bubble Plot", "Choropleth", "Histogram", "Scatterplot", "Shapes", "Survival Plot")
-selected_plot <- "Bubble Plot"
+selected_plot <- plots[1]
 themes <- c("theme_bw", "theme_calc", "theme_classic", "theme_dark", "theme_economist",
             "theme_few", "theme_fivethirtyeight", "theme_gdocs", "theme_gray",
             "theme_light", "theme_linedraw", "theme_minimal", "theme_tufte",
@@ -184,28 +184,28 @@ server <- function(input, output) {
                 num_subjects <- 1000
 
                 # Create a data frame.
-                subject <- seq(from = 1, to = num_subjects)
-                risk <- c("A", "B")
-                lambda <- 1 / runif(2, min = 90, max = 360)
-                df <- data.frame(subject,
-                                 risk = sample(risk, size = num_subjects, replace = TRUE),
+                df <- data.frame(subject = seq(from = 1, to = num_subjects),
+                                 risk = sample(c("A", "B"), size = num_subjects, replace = TRUE),
                                  event = sample(c(0, 1), size = num_subjects, replace = TRUE),
-                                 last_date = rep(NA, times = num_subjects))
+                                 last_date = rep(NA_integer_, times = num_subjects))
 
                 # Assign last date for each risk.
+                lambda <- 1 / c(90, 360)
                 df[df$risk == "A",]$last_date <- ceiling(rexp(sum(df$risk == "A"), lambda[1]))
                 df[df$risk == "B",]$last_date <- ceiling(rexp(sum(df$risk == "B"), lambda[2]))
 
                 # Create a survival fit object.
-                fit <- survfit(Surv(last_date, event) ~ risk, data = df)
+                fit <- survfit(formula = Surv(last_date, event) ~ risk,
+                               data = df)
 
                 # Create the survival plot.
                 p <- ggsurvplot(fit,
+                                data = df,
                                 conf.int = TRUE,
                                 palette = input$colorscheme,
                                 ggtheme = get(input$theme)(),
                                 legend.title = "Risk",
-                                legend.labs = risk,
+                                legend.labs = c("A", "B"),
                                 censor.shape = NA)
 
                 # Make modifications to the survival plot.
@@ -217,7 +217,7 @@ server <- function(input, output) {
                     ylab("Overall Survival Probability") +
                     theme(legend.position = "bottom")
 
-                return(p$plot)
+                p$plot
             }
         )
     )
