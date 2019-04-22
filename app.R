@@ -5,6 +5,7 @@ suppressPackageStartupMessages({
     library(plotly)
     library(RColorBrewer)
     library(scales)
+    library(sf)
     library(shiny)
     library(survival)
     library(survminer)
@@ -14,8 +15,9 @@ suppressPackageStartupMessages({
 
 plot_width <- "100%"
 plot_height <- "800px"
-plots <- c("Bar Chart", "Bubble Plot", "Choropleth", "Histogram", "Scatterplot", "Shapes", "Survival Plot")
-selected_plot <- plots[1]
+plots <- c("Bar Chart", "Bubble Plot", "Choropleth", "Choropleth (SF)",
+           "Histogram", "Regression", "Scatterplot", "Shapes", "Survival Plot")
+selected_plot <- plots[6]
 themes <- c("theme_bw", "theme_calc", "theme_classic", "theme_dark", "theme_economist",
             "theme_few", "theme_fivethirtyeight", "theme_gdocs", "theme_gray",
             "theme_light", "theme_linedraw", "theme_minimal", "theme_tufte",
@@ -132,6 +134,24 @@ server <- function(input, output) {
                     theme(legend.position = "bottom",
                           legend.direction = "horizontal")
             },
+            "Choropleth (SF)" = {
+                state_map <- st_as_sf(map("state", plot = FALSE, fill = TRUE))
+
+                data <- data.frame(ID = state_map$ID) %>%
+                    select(ID) %>%
+                    distinct() %>%
+                    mutate(value = sample(100, size = n(), replace = TRUE))
+
+                choropleth <- state_map %>%
+                    inner_join(data, by = "ID")
+
+                ggplot(choropleth, aes(fill = value)) +
+                    geom_sf() +
+                    coord_sf() +
+                    scale_fill_distiller(name = "Value", palette = input$colorscheme) +
+                    get(input$theme)() +
+                    theme(legend.position = "bottom")
+            },
             "Histogram" = {
                 count <- 10000
 
@@ -147,6 +167,41 @@ server <- function(input, output) {
                     xlab("Value") +
                     get(input$theme)() +
                     theme(axis.title.y = element_blank())
+            },
+            "Regression" = {
+                # Create a data set.
+                count <- 200
+                coeffs <- runif(2, min = 1, max = 10)
+                df <- data.frame(group = sample(c("A", "B", "C"), size = count, replace = TRUE),
+                                 x = sample(seq(from = 10, to = 70),
+                                              size = count,
+                                              replace = TRUE)) %>%
+                    mutate(error = rnorm(count, mean = 0, sd = 20),
+                           y = coeffs[1] + coeffs[2] * x + error)
+
+                # Get the lm fit.
+                fit.lm = lm(y ~ x, data = df)
+                fit.sum = summary(fit.lm)
+
+                labels <- c(paste("italic(y) == ", number(fit.lm$coefficients[1], accuracy = 0.01), " + ", number(fit.lm$coefficients[2], accuracy = 0.01), "*italic(x)"),
+                            paste("italic(R)^2 == ", number(fit.sum$r.squared, accuracy = 0.0001)),
+                            paste("italic(Adj~R)^2 == ", number(fit.sum$adj.r.squared, accuracy = 0.0001)))
+
+                y_step = 0.03
+                text_x <- min(df$x)
+                text_y <- (1.0 - y_step * seq(from = 0, to = length(labels) - 1)) * max(df$y)
+
+                # Create the plot.
+                ggplot(df, aes(x = x, y = y)) +
+                    geom_point() +
+                    geom_smooth(method = "lm",
+                                formula = y ~ x,
+                                se = TRUE) +
+                    annotate(geom = "text", label = labels,
+                             x = text_x, y = text_y,
+                             hjust = "inward", vjust = "inward",
+                             parse = TRUE) +
+                    get(input$theme)()
             },
             "Scatterplot" = {
                 count <- 500
