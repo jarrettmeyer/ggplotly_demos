@@ -170,38 +170,57 @@ server <- function(input, output) {
             },
             "Regression" = {
                 # Create a data set.
-                count <- 200
-                coeffs <- runif(2, min = 1, max = 10)
-                df <- data.frame(group = sample(c("A", "B", "C"), size = count, replace = TRUE),
-                                 x = sample(seq(from = 10, to = 70),
-                                              size = count,
-                                              replace = TRUE)) %>%
-                    mutate(error = rnorm(count, mean = 0, sd = 20),
-                           y = coeffs[1] + coeffs[2] * x + error)
+                set.seed(123)
+                size <- 500
+                conf_bounds <- qnorm(1 - 0.05 / 2)
+                df <- diamonds %>%
+                    filter(carat <= 3) %>%
+                    sample_n(size)
 
-                # Get the lm fit.
-                fit.lm = lm(y ~ x, data = df)
-                fit.sum = summary(fit.lm)
+                # Generate fit.
+                fit <- lm(price ~ carat, data = df)
+                pred <- predict(fit, se.fit = TRUE)
 
-                labels <- c(paste("italic(y) == ", number(fit.lm$coefficients[1], accuracy = 0.01), " + ", number(fit.lm$coefficients[2], accuracy = 0.01), "*italic(x)"),
-                            paste("italic(R)^2 == ", number(fit.sum$r.squared, accuracy = 0.0001)),
-                            paste("italic(Adj~R)^2 == ", number(fit.sum$adj.r.squared, accuracy = 0.0001)))
+                # Add the prediction to the data frame. We will need these values
+                # for adding the confidence bands.
+                df$pred <- pred$fit
+                df$pred.min <- pred$fit - conf_bounds * pred$se.fit
+                df$pred.max <- pred$fit + conf_bounds * pred$se.fit
+
+                # Get the slope and intercept
+                intercept <- fit$coefficients[1]
+                slope     <- fit$coefficients[2]
+                intercept_s <- comma(intercept, accuracy = 0.01)
+                slope_s     <- comma(slope, accuracy = 0.02)
+
+                # Get R-squared and adjusted R-squared.
+                rsq = number(summary(fit)$r.squared, accuracy = 0.0001)
+                adj_rsq = number(summary(fit)$adj.r.squared, accuracy = 0.0001)
+
+                labels <- c(paste0("italic(price) == '", intercept_s, "' + '", slope_s, "'*italic(carat)"),
+                            paste0("italic(R)^2 == ", rsq),
+                            paste0("italic(Adj~R)^2 == ", adj_rsq))
 
                 y_step = 0.03
-                text_x <- min(df$x)
-                text_y <- (1.0 - y_step * seq(from = 0, to = length(labels) - 1)) * max(df$y)
+                text_x <- min(df$carat)
+                text_y <- (1.0 - y_step * seq(from = 0, to = length(labels) - 1)) * max(df$price)
 
                 # Create the plot.
-                ggplot(df, aes(x = x, y = y)) +
-                    geom_point() +
-                    geom_smooth(method = "lm",
-                                formula = y ~ x,
-                                se = TRUE) +
+                ggplot(data = df, aes(x = carat, y = price)) +
+                    geom_point(alpha = 0.8) +
+                    geom_abline(intercept = intercept,
+                                slope = slope,
+                                color = "blue") +
+                    geom_ribbon(aes(ymin = pred.min, ymax = pred.max), fill = "black", alpha = 0.1) +
                     annotate(geom = "text", label = labels,
                              x = text_x, y = text_y,
                              hjust = "inward", vjust = "inward",
                              parse = TRUE) +
-                    get(input$theme)()
+                    scale_x_continuous(labels = number_format(accuracy = 0.1)) +
+                    scale_y_continuous(labels = comma) +
+                    get(input$theme)() +
+                    xlab("Carat") +
+                    ylab("Price (US$)")
             },
             "Scatterplot" = {
                 count <- 500

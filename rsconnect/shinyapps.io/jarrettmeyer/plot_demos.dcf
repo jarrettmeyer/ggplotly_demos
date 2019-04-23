@@ -5,8 +5,8 @@ account: jarrettmeyer
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 876450
-bundleId: 2022474
+bundleId: 2030296
 url: https://jarrettmeyer.shinyapps.io/plot_demos/
-when: 1555633112.36362
+when: 1555960375.41573
 asMultiple: FALSE
 asStatic: FALSE
