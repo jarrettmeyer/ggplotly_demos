@@ -4,4 +4,4 @@ sudo: false
 r: 3.5.3
 
 script:
-    - R -f ./deploy.R
+    - Rscript -f ./deploy.R
