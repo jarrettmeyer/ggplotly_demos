@@ -1,8 +1,11 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 dist: xenial
+sudo: false
 language: r
 cache: packages
-sudo: false
+
+# Which R version should be used?
+# release = Latest minor release version.
 r: release
 
 addons:
