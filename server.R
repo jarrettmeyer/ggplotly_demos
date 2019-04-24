@@ -1,9 +1,3 @@
-suppressPackageStartupMessages({
-    library(ggthemes)
-    library(RColorBrewer)
-    library(shiny)
-})
-
 #' Load util.R.
 source("./util.R")
 

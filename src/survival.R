@@ -1,9 +1,3 @@
-suppressPackageStartupMessages({
-    library(shiny)
-    library(survminer)
-    library(survival)
-})
-
 survival <- function (input, output, session) {
     set.seed(123)
     num_subjects <- 200

@@ -1,8 +1,3 @@
-suppressPackageStartupMessages({
-    library(ggplot2)
-    library(shiny)
-})
-
 shapes <- function (input, output, session) {
     df <- data.frame(shape = 0:24)
 

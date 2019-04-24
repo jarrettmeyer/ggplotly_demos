@@ -1,9 +1,3 @@
-suppressPackageStartupMessages({
-    library(ggplot2)
-    library(maps)
-    library(shiny)
-})
-
 choropleth <- function (input, output, session) {
     set.seed(123)
     state_map <- map_data("state")

@@ -1,7 +1,3 @@
-suppressPackageStartupMessages({
-    library(ggplot2)
-})
-
 scatterplot <- function (input, output, session) {
     set.seed(123)
     data(diamonds)

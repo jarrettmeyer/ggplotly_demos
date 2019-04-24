@@ -1,12 +1,3 @@
-suppressPackageStartupMessages({
-    library(ggplot2)
-    library(rnaturalearth)
-    library(rnaturalearthdata)
-    library(scales)
-    library(sf)
-    library(shiny)
-})
-
 choropleth_sf <- function (input, output, session) {
     set.seed(123)
 

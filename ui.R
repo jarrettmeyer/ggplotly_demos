@@ -1,8 +1,3 @@
-suppressPackageStartupMessages({
-    library(shiny)
-    library(shinyAce)
-})
-
 source("./util.R")
 
 plot_width  <- "640px"

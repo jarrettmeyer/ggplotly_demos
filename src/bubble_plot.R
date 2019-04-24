@@ -1,8 +1,3 @@
-suppressPackageStartupMessages({
-    library(gapminder)
-    library(ggplot2)
-})
-
 bubble_plot <- function (input, output, session) {
     max_year <- max(gapminder$year)
 

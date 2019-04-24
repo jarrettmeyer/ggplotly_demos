@@ -1,8 +1,3 @@
-suppressPackageStartupMessages({
-    library(ggplot2)
-    library(shiny)
-})
-
 histogram <- function (input, output, session) {
     set.seed(123)
     count <- 1000

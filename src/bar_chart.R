@@ -1,9 +1,3 @@
-suppressPackageStartupMessages({
-    library(RColorBrewer)
-    library(shiny)
-    library(tidyverse)
-})
-
 bar_chart <- function (input, output, session) {
     set.seed(123)
 

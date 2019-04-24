@@ -1,6 +1,18 @@
-suppressPackageStartupMessages({
-    library(RColorBrewer)
-})
+#' Load necessary libraries.
+library(gapminder)
+library(ggthemes)
+library(maps)
+library(RColorBrewer)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(scales)
+library(sf)
+library(shiny)
+library(shinyAce)
+library(survminer)
+library(survival)
+library(tidyverse)
+
 
 #' Define a list of available palettes. Based on palettes
 #' available as part of the RColorBrewer package.

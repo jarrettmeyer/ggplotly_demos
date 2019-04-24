@@ -1,7 +1,3 @@
-suppressPackageStartupMessages({
-    library(ggplot2)
-})
-
 regression <- function (input, output, session) {
     set.seed(123)
     data(diamonds)
