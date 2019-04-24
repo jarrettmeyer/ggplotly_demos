@@ -1,5 +1,7 @@
 # GGPlotly Demos
 
+[![Build Status](https://travis-ci.org/jarrettmeyer/ggplotly_demos.svg?branch=master)](https://travis-ci.org/jarrettmeyer/ggplotly_demos)
+
 ## Deployed Location
 
 This repo has been deployed to [shinyapps.io](https://www.shinyapps.io/).
@@ -15,6 +17,8 @@ Looking for package documentation?
 * [maps](https://www.rdocumentation.org/packages/maps/)
 * [plotly](https://www.rdocumentation.org/packages/plotly/)
 * [RColorBrewer](https://www.rdocumentation.org/packages/RColorBrewer/)
+* [rnaturalearth](https://www.rdocumentation.org/packages/rnaturalearth/)
+* [rnaturalearthdata](https://www.rdocumentation.org/packages/rnaturalearthdata/)
 * [scales](https://www.rdocumentation.org/packages/scales/)
 * [shiny](https://shiny.rstudio.com/)
 * [survival](https://www.rdocumentation.org/packages/survival/)
