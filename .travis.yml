@@ -5,9 +5,12 @@ sudo: false
 warnings_are_errors: false
 r: 3.5
 
+git:
+  depth: false
+
 r_packages:
- - rsconnect
+  - rsconnect
 
 deploy:
-    provider: script
-    script: R -f deploy.R
+  provider: script
+  script: R -f deploy.R
