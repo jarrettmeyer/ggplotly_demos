@@ -1,0 +1,11 @@
+Package: jarrettmeyer.shinyapps.io/plot_demos
+Imports:
+    maps,
+    RColorBrewer,
+    rnaturalearth,
+    rnaturalearthdata,
+    sf,
+    shiny,
+    survminer,
+    survival,
+    tidyverse

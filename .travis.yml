@@ -1,11 +1,13 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
-language: R
+language: r
 cache: packages
+sudo: false
+warnings_are_errors: false
+r: 3.5
 
 r_packages:
- - devtools
  - rsconnect
 
-scripts:
- - R -f deploy.R
+deploy:
+    provider: script
+    script: R -f deploy.R
