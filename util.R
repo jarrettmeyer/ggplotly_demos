@@ -39,10 +39,11 @@ plot_choices <- sort(names(sources))
 
 #' Get a file name for the given source.
 #'
+#' @param src Source file to load.
 #' @examples
 #' get_file_name("bar_chart")
 get_file_name <- function (src) {
-    return(paste0("./", src, ".R"))
+    return(paste0("./src/", src, ".R"))
 }
 
 
