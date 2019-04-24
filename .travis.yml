@@ -2,9 +2,12 @@
 dist: xenial
 language: r
 cache: packages
-sudo: false
-warnings_are_errors: false
+sudo: true
 r: release
+
+before_install:
+  - sudo apt-get update -y
+  - sudo apt-get install -y libudunits2-dev
 
 git:
   depth: false
