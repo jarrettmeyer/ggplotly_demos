@@ -18,6 +18,7 @@ git:
   depth: false
 
 r_packages:
+  - gapminder
   - ggthemes
   - maps
   - RColorBrewer
