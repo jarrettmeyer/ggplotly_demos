@@ -1,10 +1,11 @@
-dist: bionic
-language: r
-sudo: false
-r: 3.5.3
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: R
+cache: packages
 
 r_packages:
-    - rsconnect
+ - devtools
+ - rsconnect
 
-script:
-    - R -f ./deploy.R
+scripts:
+ - R -f deploy.R
