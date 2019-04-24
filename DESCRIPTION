@@ -2,4 +2,4 @@ Package: ggplotly.demos
 Date: 2019-04-24
 URL: https://jarrettmeyer.shinyapps.io/plot_demos/
 BugReports: https://github.com/jarrettmeyer/ggplotly_demos/issues
-Imports: devtools, rsconnect
+Imports: ggthemes, maps, RColorBrewer, rnaturalearth, rnaturalearthdata, rsconnect, shiny, shinyAce, survminer, survival, tidyverse
