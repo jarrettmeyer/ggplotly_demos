@@ -55,7 +55,7 @@ plot_choices <- sort(names(sources))
 #' @examples
 #' get_file_name("bar_chart")
 get_file_name <- function (src) {
-    return(paste0("./src/", src, ".R"))
+    return(paste0("./R/", src, ".R"))
 }
 
 

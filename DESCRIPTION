@@ -1,6 +1,12 @@
 Package: ggplotly.demos
 Version: 0.1.0
 Date: 2019-04-24
+Title: Plot Demos
+Description: Demonstration of plot functions in R.
+License: GPL
+Author: Jarrett Meyer [aut, cre]
+Maintainer: Jarrett Meyer <jarrettmeyer@gmail.com>
 URL: https://jarrettmeyer.shinyapps.io/plot_demos/
 BugReports: https://github.com/jarrettmeyer/ggplotly_demos/issues
-Imports: rsconnect
+Imports: gapminder, ggthemes, maps, rnaturalearth, rnaturalearthdata, RColorBrewer, 
+    rsconnect, scales, sf, shiny, shinyAce, survminer, survival, tidyverse

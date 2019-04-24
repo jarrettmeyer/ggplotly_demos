@@ -1,3 +1,5 @@
+library(ggplot2)
+
 shapes <- function (input, output, session) {
     df <- data.frame(shape = 0:24)
 

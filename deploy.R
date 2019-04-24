@@ -1,7 +1,7 @@
 library(rsconnect)
 
 # Print a list of app dependencies.
-source("./util.R")
+source("./R/util.R")
 appDependencies()
 
 # Set the account info for deployment.
