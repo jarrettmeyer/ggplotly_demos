@@ -43,10 +43,5 @@ r_packages:
   - survival
   - tidyverse
 
-deploy:
-  provider: script
-  script: R -f deploy.R
-  repo: jarrettmeyer/ggplotly_demos
-  target_branch: master
-  skip_cleanup: true
-  github_token: $github_token
+script:
+  - R -f deploy.R
