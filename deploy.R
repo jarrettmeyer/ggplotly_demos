@@ -1,5 +1,9 @@
 library(rsconnect)
 
+# Print a list of app dependencies.
+source("./util.R")
+appDependencies()
+
 # Set the account info for deployment.
 setAccountInfo(name   = Sys.getenv("shinyapps_name"),
                token  = Sys.getenv("shinyapps_token"),

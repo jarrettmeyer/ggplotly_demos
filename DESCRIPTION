@@ -1,4 +1,5 @@
 Package: ggplotly.demos
+Version: 0.1.0
 Date: 2019-04-24
 URL: https://jarrettmeyer.shinyapps.io/plot_demos/
 BugReports: https://github.com/jarrettmeyer/ggplotly_demos/issues
