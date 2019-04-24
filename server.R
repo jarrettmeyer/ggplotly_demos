@@ -1,5 +1,5 @@
 #' Load util.R.
-source("./util.R")
+source("./R/util.R")
 
 #' Defines the server function for a Shiny application.
 server <- function(input, output, session) {

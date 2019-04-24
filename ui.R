@@ -1,4 +1,4 @@
-source("./util.R")
+source("./R/util.R")
 
 plot_width  <- "640px"
 plot_height <- "480px"
