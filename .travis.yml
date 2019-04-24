@@ -1,6 +1,14 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+# What distribution are we using?
+# 14.06 = trusty
+# 16.04 = xenial
+# 18.04 = bionic
 dist: xenial
 sudo: false
+latex: false
+
+# Define the language.
 language: r
 
 # Should warnings be treated as errors? The default value for this
@@ -38,3 +46,7 @@ r_packages:
 deploy:
   provider: script
   script: R -f deploy.R
+  repo: jarrettmeyer/ggplotly_demos
+  target_branch: master
+  skip_cleanup: true
+  github_token: $github_token

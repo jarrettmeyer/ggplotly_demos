@@ -1,1 +1,5 @@
 Package: ggplotly.demos
+Type: Shiny
+Title: Plot demos for Shiny
+Version: 0.1.0
+Imports: rsconnect
