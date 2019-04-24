@@ -3,6 +3,10 @@ dist: xenial
 sudo: false
 language: r
 
+# Should warnings be treated as errors? The default value for this
+# is true. This needs to be set to false.
+warnings_are_errors: false
+
 # Which R version should be used?
 # release = Latest minor release version.
 r: release
