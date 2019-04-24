@@ -3,5 +3,8 @@ language: r
 sudo: false
 r: 3.5.3
 
+r_packages:
+    - rsconnect
+
 script:
-    - Rscript -f ./deploy.R
+    - R -f ./deploy.R
