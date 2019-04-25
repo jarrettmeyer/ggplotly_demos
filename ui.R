@@ -2,7 +2,6 @@ source("./R/util.R")
 
 plot_width  <- "640px"
 plot_height <- "480px"
-selected_plot <- plot_choices[1]
 
 #' Defines the UI for a shiny application.
 ui <- fluidPage(
@@ -44,7 +43,7 @@ ui <- fluidPage(
                     "Plot",
                     tags$h2(htmlOutput("plot_title")),
                     helpText(
-                        textOutput("help")
+                        htmlOutput("help")
                     ),
                     plotOutput("plot", width = plot_width, height = plot_height)
                 ),

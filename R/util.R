@@ -24,11 +24,15 @@ sources <- c("Bar Chart"       = "bar_chart",
              "Bubble Plot"     = "bubble_plot",
              "Choropleth"      = "choropleth",
              "Choropleth (SF)" = "choropleth_sf",
+             "Error Bars"      = "error_bars",
              "Histogram"       = "histogram",
              "Regression"      = "regression",
              "Scatterplot"     = "scatterplot",
              "Shapes"          = "shapes",
              "Survival"        = "survival")
+
+#' Define the selected plot. This is very useful for testing new plots.
+selected_plot <- "Error Bars"
 
 #' List of available themes.
 themes <- c("theme_bw",
