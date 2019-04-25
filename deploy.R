@@ -2,7 +2,7 @@ library(rsconnect)
 
 # Print a list of app dependencies.
 source("./R/util.R")
-appDependencies()
+# appDependencies()
 
 # Set the account info for deployment.
 setAccountInfo(name   = Sys.getenv("shinyapps_name"),
