@@ -2,6 +2,7 @@
 library(gapminder)
 library(ggthemes)
 library(maps)
+library(plotly)
 library(RColorBrewer)
 library(rgeos)
 library(rnaturalearth)
@@ -10,6 +11,7 @@ library(scales)
 library(sf)
 library(shiny)
 library(shinyAce)
+library(shinyjs)
 library(survminer)
 library(survival)
 library(tidyverse)
@@ -28,11 +30,12 @@ sources <- c("Bar Chart"       = "bar_chart",
              "Histogram"       = "histogram",
              "Regression"      = "regression",
              "Scatterplot"     = "scatterplot",
+             "Scatterplot 2"   = "scatterplot_2",
              "Shapes"          = "shapes",
              "Survival"        = "survival")
 
 #' Define the selected plot. This is very useful for testing new plots.
-selected_plot <- "Error Bars"
+selected_plot <- "Scatterplot 2"
 
 #' List of available themes.
 themes <- c("theme_bw",

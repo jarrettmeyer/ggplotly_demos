@@ -5,6 +5,7 @@ plot_height <- "480px"
 
 #' Defines the UI for a shiny application.
 ui <- fluidPage(
+    useShinyjs(),
 
     # Application title
     tags$h1("Plot Demos"),
