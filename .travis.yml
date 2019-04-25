@@ -29,6 +29,7 @@ apt_packages:
 git:
   depth: false
 
+# Include all necessary R packages here.
 r_packages:
   - gapminder
   - ggthemes
