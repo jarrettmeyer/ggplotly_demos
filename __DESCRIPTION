@@ -1,7 +1,0 @@
-Package: ggplotly.demos
-Type: Shiny
-Title: Plot demos for Shiny
-Description: This projects demonstrates how to create various types of plots in R with the
-    various plotting libraries.
-Version: 0.1.0
-Imports: rsconnect

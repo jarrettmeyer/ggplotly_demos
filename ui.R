@@ -45,7 +45,8 @@ ui <- fluidPage(
                     helpText(
                         htmlOutput("help")
                     ),
-                    plotOutput("plot", width = plot_width, height = plot_height)
+                    plotOutput("plot", width = plot_width, height = plot_height),
+                    plotlyOutput("plotly", width = plot_width, height = plot_height)
                 ),
                 tabPanel(
                     "Data",
