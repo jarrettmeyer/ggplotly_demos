@@ -56,5 +56,5 @@ after_success:
   - git config --global user.email "travis@travis-ci.org"
   - git remote add origin-token https://${github_token}@github.com/jarrettmeyer/ggplotly_demos.git
   - git add --all
-  - git commit -m "Travis CI build: ${TRAVIS_BUILD_NUMBER}"
+  - git commit --allow-empty -m "Travis CI build: ${TRAVIS_BUILD_NUMBER}"
   - git push --set-upstream origin-token master
