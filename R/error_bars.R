@@ -7,7 +7,7 @@ error_bars <- function (input, output, session) {
                   mean = mean(len),
                   sd = sd(len)) %>%
         ungroup() %>%
-        mutate(se = sd / sqrt(sd))
+        mutate(se = sd / sqrt(n))
 
     y_breaks <- 0:20 * 4
 
